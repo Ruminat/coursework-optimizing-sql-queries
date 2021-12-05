@@ -1,0 +1,66 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{WITH}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students} \PYG{k}{AS} \PYG{p}{(}
+    \PYG{k}{SELECT}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{speciality}\PYG{p}{.}\PYG{n}{spec\PYGZus{}title}\PYG{p}{,}
+      \PYG{k}{COUNT}\PYG{p}{(}\PYG{n}{student}\PYG{p}{.}\PYG{n}{stud\PYGZus{}num}\PYG{p}{)} \PYG{k}{AS} \PYG{n}{students\PYGZus{}count}
+    \PYG{k}{FROM}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}
+        \PYG{k}{JOIN} \PYG{n}{student}\PYG{p}{.}\PYG{n}{speciality}
+          \PYG{k}{ON} \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{spec\PYGZus{}num} \PYG{o}{=} \PYG{n}{student}\PYG{p}{.}\PYG{n}{speciality}\PYG{p}{.}\PYG{n}{spec\PYGZus{}num}
+        \PYG{k}{LEFT} \PYG{k}{JOIN} \PYG{n}{student}\PYG{p}{.}\PYG{n}{student}
+          \PYG{k}{ON} \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{group\PYGZus{}num} \PYG{o}{=} \PYG{n}{student}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}
+    \PYG{k}{GROUP} \PYG{k}{BY}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{speciality}\PYG{p}{.}\PYG{n}{spec\PYGZus{}title}
+  \PYG{p}{),}
+  \PYG{n}{student\PYGZus{}courses} \PYG{k}{AS} \PYG{p}{(}
+    \PYG{k}{SELECT}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{stud\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{curriculum}\PYG{p}{.}\PYG{n}{course\PYGZus{}num}
+    \PYG{k}{FROM} \PYG{n}{student}\PYG{p}{.}\PYG{n}{student}
+      \PYG{k}{JOIN} \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}
+        \PYG{k}{ON} \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{group\PYGZus{}num} \PYG{o}{=} \PYG{n}{student}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}
+      \PYG{k}{JOIN} \PYG{n}{student}\PYG{p}{.}\PYG{n}{curriculum}
+        \PYG{k}{ON} \PYG{n}{student}\PYG{p}{.}\PYG{n}{study\PYGZus{}group}\PYG{p}{.}\PYG{n}{spec\PYGZus{}num} \PYG{o}{=} \PYG{n}{student}\PYG{p}{.}\PYG{n}{curriculum}\PYG{p}{.}\PYG{n}{spec\PYGZus{}num}
+  \PYG{p}{),}
+  \PYG{n}{correct\PYGZus{}grades} \PYG{k}{AS} \PYG{p}{(}
+    \PYG{k}{SELECT}
+      \PYG{n}{student\PYGZus{}courses}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{stud\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{course\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{FIRST\PYGZus{}VALUE}\PYG{p}{(}\PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{grade}\PYG{p}{)}
+        \PYG{n}{OVER} \PYG{p}{(}
+          \PYG{n}{PARTITION} \PYG{k}{BY} \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{stud\PYGZus{}num}\PYG{p}{,} \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{course\PYGZus{}num}
+          \PYG{k}{ORDER} \PYG{k}{BY} \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{exam\PYGZus{}date} \PYG{k}{DESC}
+        \PYG{p}{)}
+        \PYG{k}{AS} \PYG{n}{last\PYGZus{}grade}
+    \PYG{k}{FROM} \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}
+      \PYG{k}{JOIN} \PYG{n}{student\PYGZus{}courses}
+        \PYG{k}{ON} \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{stud\PYGZus{}num} \PYG{o}{=} \PYG{n}{student\PYGZus{}courses}\PYG{p}{.}\PYG{n}{stud\PYGZus{}num}
+          \PYG{k}{AND} \PYG{n}{student}\PYG{p}{.}\PYG{n}{grades}\PYG{p}{.}\PYG{n}{course\PYGZus{}num} \PYG{o}{=} \PYG{n}{student\PYGZus{}courses}\PYG{p}{.}\PYG{n}{course\PYGZus{}num}
+  \PYG{p}{),}
+  \PYG{n}{min\PYGZus{}grades} \PYG{k}{AS} \PYG{p}{(}
+    \PYG{k}{SELECT}
+      \PYG{n}{group\PYGZus{}num}\PYG{p}{,}
+      \PYG{n}{stud\PYGZus{}num}\PYG{p}{,}
+      \PYG{k}{MIN}\PYG{p}{(}\PYG{n}{last\PYGZus{}grade}\PYG{p}{)} \PYG{k}{AS} \PYG{n}{min\PYGZus{}grade}
+    \PYG{k}{FROM} \PYG{n}{correct\PYGZus{}grades}
+    \PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{group\PYGZus{}num}\PYG{p}{,} \PYG{n}{stud\PYGZus{}num}
+  \PYG{p}{)}
+\PYG{k}{SELECT}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{group\PYGZus{}num} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Группа\PYGZdq{}}\PYG{p}{,}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{students\PYGZus{}count} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Кол\PYGZhy{}во студентов\PYGZdq{}}\PYG{p}{,}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{spec\PYGZus{}title} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Кол\PYGZhy{}во студентов\PYGZdq{}}\PYG{p}{,}
+  \PYG{k}{COUNT}\PYG{p}{(}\PYG{k}{CASE} \PYG{k}{WHEN} \PYG{n}{min\PYGZus{}grades}\PYG{p}{.}\PYG{n}{min\PYGZus{}grade} \PYG{o}{=} \PYG{l+m+mi}{5} \PYG{k}{THEN} \PYG{l+m+mi}{1} \PYG{k}{END}\PYG{p}{)} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Кол\PYGZhy{}во круглых отличников\PYGZdq{}}\PYG{p}{,}
+  \PYG{k}{COUNT}\PYG{p}{(}\PYG{k}{CASE} \PYG{k}{WHEN} \PYG{n}{min\PYGZus{}grades}\PYG{p}{.}\PYG{n}{min\PYGZus{}grade} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{k}{THEN} \PYG{l+m+mi}{1} \PYG{k}{END}\PYG{p}{)} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Кол\PYGZhy{}во должников\PYGZdq{}}
+\PYG{k}{FROM} \PYG{n}{groups\PYGZus{}with\PYGZus{}students}
+  \PYG{k}{LEFT} \PYG{k}{JOIN} \PYG{n}{min\PYGZus{}grades}
+    \PYG{k}{ON} \PYG{n}{min\PYGZus{}grades}\PYG{p}{.}\PYG{n}{group\PYGZus{}num} \PYG{o}{=} \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}
+\PYG{k}{GROUP} \PYG{k}{BY}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{group\PYGZus{}num}\PYG{p}{,}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{students\PYGZus{}count}\PYG{p}{,}
+  \PYG{n}{groups\PYGZus{}with\PYGZus{}students}\PYG{p}{.}\PYG{n}{spec\PYGZus{}title}\PYG{p}{;}
+\end{Verbatim}

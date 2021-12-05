@@ -1,0 +1,67 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+| Id  | Operation                              | Name                  | Rows  | Bytes |TempSpc| Cost (\PYGZpc{}CPU)| Time     |
+\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+|   0 | SELECT STATEMENT                       |                       |   671 | 68442 |       |   588   (7)| 00:00:01 |
+|   1 |  HASH GROUP BY                         |                       |   671 | 68442 |       |   588   (7)| 00:00:01 |
+|*  2 |   HASH JOIN RIGHT OUTER                |                       |   417K|    40M|       |   564   (3)| 00:00:01 |
+|   3 |    VIEW                                |                       | 14007 |   410K|       |   502   (2)| 00:00:01 |
+|   4 |     HASH GROUP BY                      |                       | 14007 |   478K|   672K|   502   (2)| 00:00:01 |
+|   5 |      VIEW                              |                       | 14007 |   478K|       |   367   (2)| 00:00:01 |
+|   6 |       WINDOW SORT                      |                       | 14007 |  1176K|  1328K|   367   (2)| 00:00:01 |
+|*  7 |        HASH JOIN                       |                       | 14007 |  1176K|       |    84   (3)| 00:00:01 |
+|   8 |         INDEX FAST FULL SCAN           | PK\PYGZus{}UCHEB              |     5 |   130 |       |     2   (0)| 00:00:01 |
+|*  9 |         HASH JOIN                      |                       | 22411 |  1313K|       |    82   (3)| 00:00:01 |
+|  10 |          TABLE ACCESS FULL             | STUDY\PYGZus{}GROUP           |   671 | 20130 |       |     3   (0)| 00:00:01 |
+|* 11 |          HASH JOIN                     |                       | 22411 |   656K|       |    79   (3)| 00:00:01 |
+|  12 |           VIEW                         | index\PYGZdl{}\PYGZus{}join\PYGZdl{}\PYGZus{}006      | 19983 |   195K|       |    51   (2)| 00:00:01 |
+|* 13 |            HASH JOIN                   |                       |       |       |       |            |          |
+|  14 |             BITMAP CONVERSION TO ROWIDS|                       | 19983 |   195K|       |    11   (0)| 00:00:01 |
+|  15 |              BITMAP INDEX FULL SCAN    | STUDENT\PYGZus{}GROUP\PYGZus{}NUM\PYGZus{}IDX |       |       |       |            |          |
+|  16 |             INDEX FAST FULL SCAN       | SYS\PYGZus{}C009626           | 19983 |   195K|       |    49   (0)| 00:00:01 |
+|  17 |           TABLE ACCESS FULL            | GRADES                | 22430 |   438K|       |    27   (0)| 00:00:01 |
+|  18 |    VIEW                                |                       | 19983 |  1405K|       |    59   (6)| 00:00:01 |
+|  19 |     HASH GROUP BY                      |                       | 19983 |  1853K|       |    59   (6)| 00:00:01 |
+|* 20 |      HASH JOIN OUTER                   |                       | 19983 |  1853K|       |    57   (2)| 00:00:01 |
+|* 21 |       HASH JOIN                        |                       |   671 | 57035 |       |     6   (0)| 00:00:01 |
+|  22 |        TABLE ACCESS FULL               | SPECIALITY            |     4 |   220 |       |     3   (0)| 00:00:01 |
+|  23 |        TABLE ACCESS FULL               | STUDY\PYGZus{}GROUP           |   671 | 20130 |       |     3   (0)| 00:00:01 |
+|  24 |       VIEW                             | index\PYGZdl{}\PYGZus{}join\PYGZdl{}\PYGZus{}004      | 19983 |   195K|       |    51   (2)| 00:00:01 |
+|* 25 |        HASH JOIN                       |                       |       |       |       |            |          |
+|  26 |         BITMAP CONVERSION TO ROWIDS    |                       | 19983 |   195K|       |    11   (0)| 00:00:01 |
+|  27 |          BITMAP INDEX FULL SCAN        | STUDENT\PYGZus{}GROUP\PYGZus{}NUM\PYGZus{}IDX |       |       |       |            |          |
+|  28 |         INDEX FAST FULL SCAN           | SYS\PYGZus{}C009626           | 19983 |   195K|       |    49   (0)| 00:00:01 |
+\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+
+Predicate Information (identified by operation id):
+\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+
+   2 \PYGZhy{} access(\PYGZdq{}MIN\PYGZus{}GRADES\PYGZdq{}.\PYGZdq{}GROUP\PYGZus{}NUM\PYGZdq{}(+)=\PYGZdq{}GROUPS\PYGZus{}WITH\PYGZus{}STUDENTS\PYGZdq{}.\PYGZdq{}GROUP\PYGZus{}NUM\PYGZdq{})
+   7 \PYGZhy{} access(\PYGZdq{}GRADES\PYGZdq{}.\PYGZdq{}COURSE\PYGZus{}NUM\PYGZdq{}=\PYGZdq{}CURRICULUM\PYGZdq{}.\PYGZdq{}COURSE\PYGZus{}NUM\PYGZdq{} AND
+              \PYGZdq{}STUDY\PYGZus{}GROUP\PYGZdq{}.\PYGZdq{}SPEC\PYGZus{}NUM\PYGZdq{}=\PYGZdq{}CURRICULUM\PYGZdq{}.\PYGZdq{}SPEC\PYGZus{}NUM\PYGZdq{})
+   9 \PYGZhy{} access(\PYGZdq{}STUDY\PYGZus{}GROUP\PYGZdq{}.\PYGZdq{}GROUP\PYGZus{}NUM\PYGZdq{}=\PYGZdq{}STUDENT\PYGZdq{}.\PYGZdq{}GROUP\PYGZus{}NUM\PYGZdq{})
+  11 \PYGZhy{} access(\PYGZdq{}GRADES\PYGZdq{}.\PYGZdq{}STUD\PYGZus{}NUM\PYGZdq{}=\PYGZdq{}STUDENT\PYGZdq{}.\PYGZdq{}STUD\PYGZus{}NUM\PYGZdq{})
+  13 \PYGZhy{} access(ROWID=ROWID)
+  20 \PYGZhy{} access(\PYGZdq{}STUDY\PYGZus{}GROUP\PYGZdq{}.\PYGZdq{}GROUP\PYGZus{}NUM\PYGZdq{}=\PYGZdq{}STUDENT\PYGZdq{}.\PYGZdq{}GROUP\PYGZus{}NUM\PYGZdq{}(+))
+  21 \PYGZhy{} access(\PYGZdq{}STUDY\PYGZus{}GROUP\PYGZdq{}.\PYGZdq{}SPEC\PYGZus{}NUM\PYGZdq{}=\PYGZdq{}SPECIALITY\PYGZdq{}.\PYGZdq{}SPEC\PYGZus{}NUM\PYGZdq{})
+  25 \PYGZhy{} access(ROWID=ROWID)
+
+Note
+\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+   \PYGZhy{} dynamic statistics used: dynamic sampling (level=2)
+
+
+Statistics
+\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+       2348  recursive calls
+         20  db block gets
+       3704  consistent gets
+        422  physical reads
+       3888  redo size
+      39400  bytes sent via SQL*Net to client
+        536  bytes received via SQL*Net from client
+         46  SQL*Net roundtrips to/from client
+        219  sorts (memory)
+          0  sorts (disk)
+        671  rows processed
+\end{Verbatim}

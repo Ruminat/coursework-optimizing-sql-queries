@@ -1,0 +1,21 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{SELECT} \PYG{n}{upper\PYGZus{}employees}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees} \PYG{n}{upper\PYGZus{}employees}
+\PYG{k}{WHERE} \PYG{k}{NOT} \PYG{k}{EXISTS} \PYG{p}{(}
+  \PYG{k}{SELECT} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}
+  \PYG{k}{FROM} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees}
+    \PYG{k}{JOIN} \PYG{p}{(}
+      \PYG{k}{SELECT} \PYG{n}{manager\PYGZus{}id}
+      \PYG{k}{FROM} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees}
+      \PYG{k}{WHERE} \PYG{n}{manager\PYGZus{}id} \PYG{k}{IS} \PYG{k}{NOT} \PYG{k}{NULL}
+      \PYG{k}{UNION} \PYG{k}{ALL}
+      \PYG{k}{SELECT} \PYG{n}{manager\PYGZus{}id}
+      \PYG{k}{FROM} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{departments}
+      \PYG{k}{WHERE} \PYG{n}{manager\PYGZus{}id} \PYG{k}{IS} \PYG{k}{NOT} \PYG{k}{NULL}
+    \PYG{p}{)} \PYG{n}{manager\PYGZus{}ids}
+    \PYG{k}{ON} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees}\PYG{p}{.}\PYG{n}{employee\PYGZus{}id} \PYG{o}{=} \PYG{n}{manager\PYGZus{}ids}\PYG{p}{.}\PYG{n}{manager\PYGZus{}id}
+  \PYG{k}{WHERE} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees}\PYG{p}{.}\PYG{n}{first\PYGZus{}name} \PYG{o}{=} \PYG{n}{upper\PYGZus{}employees}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}
+\PYG{p}{)}
+\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{upper\PYGZus{}employees}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}
+\PYG{k}{HAVING} \PYG{k}{COUNT}\PYG{p}{(}\PYG{o}{*}\PYG{p}{)} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{3}\PYG{p}{;}
+\end{Verbatim}

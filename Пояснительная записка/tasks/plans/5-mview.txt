@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------------------------------
+| Id  | Operation            | Name                       | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |                            |  1101 | 82575 |     6   (0)| 00:00:01 |
+|   1 |  MAT_VIEW ACCESS FULL| EMPLOYEES_JOB_SALARY_MVIEW |  1101 | 82575 |     6   (0)| 00:00:01 |
+---------------------------------------------------------------------------------------------------
+
+
+Statistics
+----------------------------------------------------------
+        954  recursive calls
+         18  db block gets
+       1576  consistent gets
+        113  physical reads
+       2940  redo size
+     103883  bytes sent via SQL*Net to client
+        855  bytes received via SQL*Net from client
+         75  SQL*Net roundtrips to/from client
+         84  sorts (memory)
+          0  sorts (disk)
+       1101  rows processed

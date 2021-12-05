@@ -1,0 +1,59 @@
+\input{template_settings/ch_preamble} % лучше не редактировать / please, keep unmodified
+\DeclareGraphicsExtensions{.pdf, .png, .jpg}
+\graphicspath{{./my_folder/images/}}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,positioning}
+\usepackage{float}
+
+\usepackage{amssymb}
+
+
+\usepackage{CJKutf8}
+\usepackage{pdfpages}
+\usepackage{CJK,CJKspace,CJKpunct}
+\pdfmapline{=unisong@Unicode@ <ipam.ttf}
+\usepackage{minted}
+
+\usepackage{lmodern}
+
+% вертикальное выравнивание колонок в таблице
+\renewcommand\tabularxcolumn[1]{m{#1}}
+
+\newcommand{\commands}{C:/Users/Ruminat/GoogleDrive/TeX/commands}
+\newcommand{\import}[1]{\input{\commands/#1}}
+\import{old/textCommands} % текстовые команды
+
+\newcommand{\SQLcode}[1]{\inputminted[tabsize=2, mathescape, fontsize=\footnotesize]{sql}{tasks/code/#1}}
+\newcommand{\SQLplan}[1]{\inputminted[tabsize=2, mathescape, fontsize=\fontsize{7}{7}\selectfont]{text}{tasks/plans/#1}}
+
+\setcounter{docType}{1} % лучше не редактировать / please, keep unmodified
+
+%%%% Настройки автора / Author settings
+%% 
+\input{my_folder/my_settings} % добавляем свои команды / update your commands
+
+\begin{document} % начало документа
+  \input{template_settings/common/renames} % Заполнить сведения, 
+  % \input{my_folder/title}          % Титульный лист
+
+  % title
+  \thispagestyle{empty}%
+  \includepdf[fitpaper=true, pages=-, pagecommand={}]{title.pdf}
+
+  \input{my_folder/contents}             % Оглавление
+
+  %% Начало основной части
+  \input{my_folder/introduction}         % Введение
+  \input{my_folder/chapter1}             % Глава 1
+  % \ContinueChapterBegin % размещать главы <<подряд>> 
+  \input{my_folder/chapter2}             % Глава 2
+  % \input{my_folder/chapter3}             % Глава 3
+  % \input{my_folder/chapter4}             % Глава 3
+  % \ContinueChapterEnd % завершить размещение глав <<подряд>>
+  \input{my_folder/conclusion}           % Заключение
+  % %% Завершение основной части
+
+  \input{my_folder/references}         % Список литературы
+  \appendix % не редактировать / keep unmodified
+\end{document}

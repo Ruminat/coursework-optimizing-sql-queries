@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{SELECT}
+  \PYG{n}{job\PYGZus{}id} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Job ID\PYGZdq{}}\PYG{p}{,}
+  \PYG{n}{salary} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Salary\PYGZdq{}}\PYG{p}{,}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} CAST нужен для того, чтобы список помещался в одну строчку.}
+  \PYG{k}{CAST}\PYG{p}{(}
+    \PYG{n}{LISTAGG}\PYG{p}{(}\PYG{n}{last\PYGZus{}name}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}, \PYGZsq{}}\PYG{p}{)}
+      \PYG{n}{WITHIN} \PYG{k}{GROUP} \PYG{p}{(}\PYG{k}{ORDER} \PYG{k}{BY} \PYG{n}{last\PYGZus{}name}\PYG{p}{)}
+    \PYG{k}{AS} \PYG{n}{VARCHAR2}\PYG{p}{(}\PYG{l+m+mi}{64}\PYG{p}{)}
+  \PYG{p}{)} \PYG{k}{AS} \PYG{l+s+ss}{\PYGZdq{}Surnames\PYGZdq{}}
+\PYG{k}{FROM} \PYG{n}{hr}\PYG{p}{.}\PYG{n}{employees}
+\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{job\PYGZus{}id}\PYG{p}{,} \PYG{n}{salary}
+\PYG{k}{HAVING} \PYG{k}{COUNT}\PYG{p}{(}\PYG{o}{*}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{1}
+\PYG{k}{ORDER} \PYG{k}{BY} \PYG{l+s+ss}{\PYGZdq{}Salary\PYGZdq{}} \PYG{k}{DESC}\PYG{p}{,} \PYG{l+s+ss}{\PYGZdq{}Job ID\PYGZdq{}}\PYG{p}{;}
+\end{Verbatim}

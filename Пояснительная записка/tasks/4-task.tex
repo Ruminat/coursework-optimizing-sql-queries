@@ -1,0 +1,66 @@
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+\chapter{Задача «Клиент, сделавший покупку на максимальную сумму (SH)»}
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Описание задачи}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+Используются таблицы схемы \texttt{SH}. Вывести фамилию и имя клиента, сделавшего покупки через интернет (\texttt{channel\_desc = "Internet"}) или партнёров (\texttt{channel\_desc = "Partners"}) не по акции (\texttt{promo\_category = "NO PROMOTION \#"}) на максимальную сумму в заданном году.
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Составленный запрос}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLcode{task-4.sql}
+
+\begin{algorithm}[H]
+  \caption{Запрос для задачи №4}
+  \label{code-task-4}
+\end{algorithm}
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{text}%
+Surname                                  Name                      Spent
+---------------------------------------- -------------------- ----------
+Bakerman                                 Marvel                 56243,93
+\end{minted}
+
+\begin{figure}[H]%
+  \caption{Результат запроса для года 1998}
+  \label{fig-task-4-output}
+\end{figure}
+
+
+\SQLplan{4-no-op.txt}
+\begin{figure}[H]%
+  \caption{План выполнения запроса}
+  \label{fig-task-4-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Первая оптимизация (индексно-организованная таблица)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLplan{4-iot.txt}
+\begin{figure}[H]%
+  \caption{План выполнения оптимизированного запроса}
+  \label{fig-task-4-iot-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Вторая оптимизация (компизитный B-tree индекс)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLplan{4-composite.txt}
+\begin{figure}[H]%
+  \caption{План выполнения оптимизированного запроса}
+  \label{fig-task-4-composite-plan}
+\end{figure}

@@ -1,0 +1,37 @@
+-------------------------------------------------------------------------------------------
+| Id  | Operation                | Name           | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT         |                |     5 |   610 |   107   (4)| 00:00:01 |
+|   1 |  MINUS HASH              |                |       |       |            |          |
+|*  2 |   HASH GROUP BY          |                |     5 |    35 |    17  (18)| 00:00:01 |
+|   3 |    INDEX FAST FULL SCAN  | EMP_NAME_IX    | 10107 | 70749 |    14   (0)| 00:00:01 |
+|*  4 |   HASH JOIN SEMI         |                |    23 |   575 |    90   (2)| 00:00:01 |
+|   5 |    TABLE ACCESS FULL     | EMPLOYEES      | 10107 |   118K|    68   (0)| 00:00:01 |
+|   6 |    VIEW                  |                | 10117 |   128K|    21   (0)| 00:00:01 |
+|   7 |     UNION-ALL            |                |       |       |            |          |
+|*  8 |      INDEX FAST FULL SCAN| EMP_MANAGER_IX | 10106 | 40424 |    18   (0)| 00:00:01 |
+|*  9 |      TABLE ACCESS FULL   | DEPARTMENTS    |    11 |    33 |     3   (0)| 00:00:01 |
+-------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(COUNT(*)>=3)
+   4 - access("EMPLOYEES"."EMPLOYEE_ID"="MANAGER_IDS"."MANAGER_ID")
+   8 - filter("MANAGER_ID" IS NOT NULL)
+   9 - filter("MANAGER_ID" IS NOT NULL)
+
+
+Statistics
+----------------------------------------------------------
+        526  recursive calls
+          0  db block gets
+       1189  consistent gets
+        420  physical reads
+          0  redo size
+       2023  bytes sent via SQL*Net to client
+         96  bytes received via SQL*Net from client
+          6  SQL*Net roundtrips to/from client
+         68  sorts (memory)
+          0  sorts (disk)
+         68  rows processed

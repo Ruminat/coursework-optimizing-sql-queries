@@ -1,0 +1,83 @@
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+\chapter{Задача «Имена сотрудников, встречающиеся более 2-ух раз (HR)»}
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Описание задачи}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+Используются таблицы схемы \texttt{HR}. Вывести имена сотрудников, встречающиеся в таблице сотрудников не менее трех раз и не являющиеся именами руководителей подразделений компании или именами непосредственных руководителей кого-либо. В результате должны быть выведены только имена сотрудников, причём каждое "--- только один раз.
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Составленный запрос}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLcode{task-2.sql}
+\begin{algorithm}[H]
+  \caption{Запрос для задачи №2}
+  \label{code-task-2}
+\end{algorithm}
+
+
+\begin{samepage}%
+  \begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{text}%
+FIRST_NAME
+----------
+David
+Peter
+  \end{minted}
+  \begin{figure}[H]%
+    \caption{Результат запроса}
+    \label{fig-task-2-output}
+  \end{figure}
+\end{samepage}
+
+
+\SQLplan{2-no-op.txt}
+\begin{figure}[H]%
+  \caption{План выполнения запроса}
+  \label{fig-task-2-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Первая оптимизация (переписывание запроса)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLcode{task-2-rewritten.sql}
+\begin{algorithm}[H]
+  \caption{Переписанный запрос}
+  \label{code-task-2-rewritten}
+\end{algorithm}
+
+
+\SQLplan{2-rewrite.txt}
+\begin{figure}[H]%
+  \caption{План выполнения переписанного запроса}
+  \label{fig-task-2-rewrite-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Вторая оптимизация (материализованное представление)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+% \SQLcode{task-2-.sql}
+% \begin{algorithm}[H]
+%   \caption{Переписанный запрос}
+%   \label{code-task-2-rewritten}
+% \end{algorithm}
+
+
+\SQLplan{2-mview.txt}
+\begin{figure}[H]%
+  \caption{План выполнения материализованного представления}
+  \label{fig-task-2-mview-plan}
+\end{figure}
+

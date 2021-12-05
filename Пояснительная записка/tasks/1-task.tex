@@ -1,0 +1,83 @@
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+\chapter{Задача «Процент мужщин/женщин в заданную дату (OE)»}
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Описание задачи}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+Используются таблицы схемы \texttt{OE}. Вывести процентное соотношение мужчин и женщин, разместивших заказы в заданную дату. Если один и тот же человек разместил несколько заказов в заданную дату, он должен быть учтён только один раз. В результате должно быть три столбца: дата, процент мужчин и процент женщин.
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Составленный запрос}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLcode{task-1.sql}
+\begin{algorithm}[H]
+  \caption{Запрос для задачи №1}
+  \label{code-task-1}
+\end{algorithm}
+
+\begin{samepage}%
+  \begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{text}%
+Date        Males (%) Females (%)
+---------- ---------- -----------
+29-06-2007         75          25
+  \end{minted}
+  \begin{figure}[H]%
+    \caption{Результат запроса для даты «29-06-2007»}
+    \label{fig-task-1-output}
+  \end{figure}
+\end{samepage}
+
+
+\SQLplan{1-no-op.txt}
+\begin{figure}[H]%
+  \caption{План выполнения запроса}
+  \label{fig-task-1-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Первая оптимизация (function-based индекс)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
+CREATE INDEX orders_order_date_fnidx ON orders (TRUNC(order_date, 'dd'));
+\end{minted}
+\begin{figure}[H]%
+  \caption{Создание function-based индекса}
+  \label{fig-task-1-plan}
+\end{figure}
+
+
+\SQLplan{1-function-based.txt}
+\begin{figure}[H]%
+  \caption{План выполнения оптимизированного запроса}
+  \label{fig-task-1-function-based-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Вторая оптимизация (bitmap индекс)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
+CREATE BITMAP INDEX customers_gender_btmidx ON oe.customers (gender);
+\end{minted}
+\begin{figure}[H]%
+  \caption{Создание bitmap индекса}
+  \label{fig-task-1-bitmap-plan}
+\end{figure}
+
+\SQLplan{1-bitmap.txt}
+\begin{figure}[H]%
+  \caption{План выполнения оптимизированного запроса}
+  \label{fig-task-1-bitmap-plan}
+\end{figure}

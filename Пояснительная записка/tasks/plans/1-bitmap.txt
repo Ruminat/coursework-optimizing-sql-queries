@@ -1,0 +1,38 @@
+-----------------------------------------------------------------------------------------------------------
+| Id  | Operation                       | Name                    | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                |                         |     1 |    20 |    51   (8)| 00:00:01 |
+|   1 |  SORT AGGREGATE                 |                         |     1 |    20 |            |          |
+|*  2 |   HASH JOIN                     |                         |   250 |  5000 |    51   (8)| 00:00:01 |
+|   3 |    VIEW                         |                         |   250 |  3250 |    29  (14)| 00:00:01 |
+|   4 |     HASH UNIQUE                 |                         |   250 |  4000 |    29  (14)| 00:00:01 |
+|*  5 |      TABLE ACCESS FULL          | ORDERS                  |   253 |  4048 |    28  (11)| 00:00:01 |
+|   6 |    VIEW                         | index$_join$_001        | 10319 | 72233 |    22   (0)| 00:00:01 |
+|*  7 |     HASH JOIN                   |                         |       |       |            |          |
+|   8 |      BITMAP CONVERSION TO ROWIDS|                         | 10319 | 72233 |     1   (0)| 00:00:01 |
+|   9 |       BITMAP INDEX FULL SCAN    | CUSTOMERS_GENDER_BTMIDX |       |       |            |          |
+|  10 |      INDEX FAST FULL SCAN       | CUSTOMERS_PK            | 10319 | 72233 |    26   (0)| 00:00:01 |
+-----------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("CUSTOMERS"."CUSTOMER_ID"="CUSTOMER_IDS"."CUSTOMER_ID")
+   5 - filter(TRUNC(INTERNAL_FUNCTION("ORDER_DATE"),'fmdd')=TO_DATE(' 2007-06-29 00:00:00',
+              'syyyy-mm-dd hh24:mi:ss') AND "CUSTOMER_ID">0)
+   7 - access(ROWID=ROWID)
+
+
+Statistics
+----------------------------------------------------------
+       1252  recursive calls
+         13  db block gets
+       1637  consistent gets
+        252  physical reads
+       2032  redo size
+        776  bytes sent via SQL*Net to client
+         52  bytes received via SQL*Net from client
+          2  SQL*Net roundtrips to/from client
+        116  sorts (memory)
+          0  sorts (disk)
+          1  rows processed

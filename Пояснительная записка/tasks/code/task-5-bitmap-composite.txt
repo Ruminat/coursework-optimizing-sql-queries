@@ -1,0 +1,33 @@
+------------------------------------------------------------------------------------------------------------
+| Id  | Operation                       | Name                     | Rows  | Bytes | Cost (%CPU)| Time     |
+------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                |                          |    39 |   975 |    57   (4)| 00:00:01 |
+|*  1 |  FILTER                         |                          |       |       |            |          |
+|   2 |   SORT GROUP BY                 |                          |    39 |   975 |    57   (4)| 00:00:01 |
+|   3 |    VIEW                         | index$_join$_001         | 10107 |   246K|    55   (0)| 00:00:01 |
+|*  4 |     HASH JOIN                   |                          |       |       |            |          |
+|   5 |      BITMAP CONVERSION TO ROWIDS|                          | 10107 |   246K|    10   (0)| 00:00:01 |
+|   6 |       BITMAP INDEX FULL SCAN    | EMPLOYEES_SALARY_JOB_IDX |       |       |            |          |
+|   7 |      INDEX FAST FULL SCAN       | EMP_NAME_IX              | 10107 |   246K|    56   (0)| 00:00:01 |
+------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter(COUNT(*)>1)
+   4 - access(ROWID=ROWID)
+
+
+Statistics
+----------------------------------------------------------
+        506  recursive calls
+         12  db block gets
+        786  consistent gets
+        113  physical reads
+       2024  redo size
+     100333  bytes sent via SQL*Net to client
+        855  bytes received via SQL*Net from client
+         75  SQL*Net roundtrips to/from client
+         54  sorts (memory)
+          0  sorts (disk)
+       1101  rows processed

@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------------
+| Id  | Operation           | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT    |           |    39 |   975 |    70   (3)| 00:00:01 |
+|*  1 |  FILTER             |           |       |       |            |          |
+|   2 |   SORT GROUP BY     |           |    39 |   975 |    70   (3)| 00:00:01 |
+|   3 |    TABLE ACCESS FULL| EMPLOYEES | 10107 |   246K|    68   (0)| 00:00:01 |
+---------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter(COUNT(*)>1)
+
+
+Statistics
+----------------------------------------------------------
+        469  recursive calls
+          0  db block gets
+        918  consistent gets
+        295  physical reads
+          0  redo size
+     100333  bytes sent via SQL*Net to client
+        855  bytes received via SQL*Net from client
+         75  SQL*Net roundtrips to/from client
+         49  sorts (memory)
+          0  sorts (disk)
+       1101  rows processed

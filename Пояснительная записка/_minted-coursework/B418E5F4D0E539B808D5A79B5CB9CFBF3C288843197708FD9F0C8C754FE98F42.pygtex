@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{CREATE} \PYG{k}{INDEX} \PYG{n}{orders\PYGZus{}order\PYGZus{}date\PYGZus{}fnidx} \PYG{k}{ON} \PYG{n}{orders} \PYG{p}{(}\PYG{n}{TRUNC}\PYG{p}{(}\PYG{n}{order\PYGZus{}date}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}dd\PYGZsq{}}\PYG{p}{));}
+\end{Verbatim}

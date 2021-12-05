@@ -1,0 +1,24 @@
+%!TeX root = ../My_thesis.tex
+
+
+\chapter*{Описание окружения} % * не проставляет номер
+\addcontentsline{toc}{chapter}{Описание окружения} % вносим в содержание
+
+
+Используется база данных Oracle версии \texttt{Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production Version 21.3.0.0.0}.
+Схемы создавались в Portable Database~\cite{PDB} \texttt{xepdb1}, поэтому строки подключения имели вид: \texttt{CONNECT hr/PASSWORD@xepdb1}.
+
+Стандартные схемы Oracle (\texttt{HR}, \texttt{OE} и~т.\,д.) были взяты из оффициального репозитория Oracle~\cite{SampleSchemas}.
+
+Схема \texttt{STUDENT} была взята с учебного курса «Программирование и оптимизация баз данных»~\cite{StudentSchema}.
+
+Перед каждым выполнением SQL-запроса выполняется очистка Buffer Cache и Shared Pool с помощью первых двух команд ниже.
+После чего выполняется запрос с выводом плана.
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\footnotesize]{sql}
+alter system flush shared_pool;
+alter system flush buffer_cache;
+set autotrace on
+@task-/*НОМЕР-ЗАДАНИЯ*/.sql
+set autotrace off
+\end{minted}

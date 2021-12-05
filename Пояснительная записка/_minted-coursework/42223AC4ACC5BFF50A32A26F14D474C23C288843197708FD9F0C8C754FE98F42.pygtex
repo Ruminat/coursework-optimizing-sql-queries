@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{alter} \PYG{k}{system} \PYG{n}{flush} \PYG{n}{shared\PYGZus{}pool}\PYG{p}{;}
+\PYG{k}{alter} \PYG{k}{system} \PYG{n}{flush} \PYG{n}{buffer\PYGZus{}cache}\PYG{p}{;}
+\PYG{k}{set} \PYG{n}{autotrace} \PYG{k}{on}
+\PYG{o}{@}\PYG{n}{task}\PYG{o}{\PYGZhy{}}\PYG{c+cm}{/*НОМЕР\PYGZhy{}ЗАДАНИЯ*/}\PYG{p}{.}\PYG{k}{sql}
+\PYG{k}{set} \PYG{n}{autotrace} \PYG{k}{off}
+\end{Verbatim}

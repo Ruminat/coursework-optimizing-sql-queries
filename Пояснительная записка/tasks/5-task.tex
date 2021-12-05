@@ -1,0 +1,121 @@
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+\chapter{Задача «Список сотрудников по должностям и зарплатам (HR)»}
+% .---|||___|||--- S E C T I O N ---|||___|||---. %
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Описание задачи}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+Используются таблицы схемы \texttt{HR}. Одной командой \texttt{SELECT} вывести список сотрудников компании, имеющих коллег с таким же идентификатором должности и окладом. Если некоторый идентификатор должности и размер оклада имеет один единственный сотрудник, то сведения о нём в результат попадать не должны.
+
+В результат вывести:
+\begin{enumerate}[1.]%
+  \item идентификатор должности;
+  \item размер оклада;
+  \item список фамилий сотрудников, имеющих данный идентификатор должности и данный оклад.
+\end{enumerate}
+
+Фамилии в списке должны быть:
+\begin{enumerate}[a.]%
+  \item упорядочены по алфавиту (по возрастанию),
+  \item разделены символами \texttt{', '} («запятая» и «пробел»),
+  \item перед первой фамилией не должно быть символов-разделителей,
+  \item после последней фамилии символов-разделителей быть не должно.
+\end{enumerate}
+
+Результат упорядочить:
+\begin{enumerate}[1.]%
+  \item по размеру оклада (по убыванию),
+  \item по идентификатору должности (по возрастанию).
+\end{enumerate}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Составленный запрос}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLcode{task-5.sql}
+
+\begin{algorithm}[H]
+  \caption{Запрос для задачи №5}
+  \label{code-task-5}
+\end{algorithm}
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{text}%
+Job ID         Salary Surnames
+---------- ---------- ------------------------------
+AD_VP           17000 De Haan, Kochhar
+SA_REP          10000 Bloom, King, Tucker
+SA_REP           9500 Bernstein, Greene, Sully
+SA_REP           9000 Hall, McEwen
+SA_REP           8000 Olsen, Smith
+SA_REP           7500 Cambrault, Doran
+SA_REP           7000 Grant, Sewall, Tuvault
+SA_REP           6200 Banda, Johnson
+IT_PROG          4800 Austin, Pataballa
+ST_CLERK         3300 Bissot, Mallin
+SH_CLERK         3200 McCain, Taylor
+
+Job ID         Salary Surnames
+---------- ---------- ------------------------------
+ST_CLERK         3200 Nayer, Stiles
+SH_CLERK         3100 Fleaur, Walsh
+SH_CLERK         3000 Cabrio, Feeney
+SH_CLERK         2800 Geoni, Jones
+ST_CLERK         2700 Mikkilineni, Seo
+SH_CLERK         2600 Grant, OConnell
+SH_CLERK         2500 Perkins, Sullivan
+ST_CLERK         2500 Marlow, Patel, Vargas
+ST_CLERK         2400 Gee, Landry
+ST_CLERK         2200 Markle, Philtanker
+\end{minted}
+\begin{figure}[H]%
+  \caption{Результат запроса}
+  \label{fig-task-5-output}
+\end{figure}
+
+
+\SQLplan{5-no-op.txt}
+\begin{figure}[H]%
+  \caption{План выполнения запроса}
+  \label{fig-task-5-plan}
+\end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Первая оптимизация (материализованное представление)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLplan{5-mview.txt}
+\begin{figure}[H]%
+  \caption{План выполнения материализованного представления}
+  \label{fig-task-5-mview-plan}
+\end{figure}
+
+
+% % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+% \section{Вторая оптимизация (индексно-организованная таблица)}
+% % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+% \SQLplan{5-iot.txt}
+% \begin{figure}[H]%
+%   \caption{План выполнения оптимизированного запроса}
+%   \label{fig-task-5-iot-plan}
+% \end{figure}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Вторая оптимизация (композитный bitmap индекс)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+\SQLplan{5-bitmap-composite.txt}
+\begin{figure}[H]%
+  \caption{План выполнения оптимизированного запроса}
+  \label{fig-task-5-bitmap-composite-plan}
+\end{figure}

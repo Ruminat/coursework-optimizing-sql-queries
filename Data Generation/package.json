@@ -1,0 +1,11 @@
+{
+  "name": "data-generation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "ruminat",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "clipboardy": "^3.0.0"
+  }
+}

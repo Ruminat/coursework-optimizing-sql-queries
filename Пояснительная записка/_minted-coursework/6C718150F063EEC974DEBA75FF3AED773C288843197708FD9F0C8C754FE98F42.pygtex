@@ -1,3 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
-\PYG{k}{CREATE} \PYG{n}{BITMAP} \PYG{k}{INDEX} \PYG{n}{customers\PYGZus{}gender\PYGZus{}btmidx} \PYG{k}{ON} \PYG{n}{oe}\PYG{p}{.}\PYG{n}{customers} \PYG{p}{(}\PYG{n}{gender}\PYG{p}{);}
-\end{Verbatim}

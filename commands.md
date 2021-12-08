@@ -24,7 +24,7 @@ SET LIN 280
 alter system flush shared_pool;
 alter system flush buffer_cache;
 set autotrace on
-@task-5.sql
+@task-3.sql
 set autotrace off
 
 -- set timing off
@@ -56,6 +56,8 @@ INSERT INTO study_group (group_num, spec_num) VALUES (666, 1);
 ```
 
 ## Some shit, I don't know what it is
+
+ (\d+) to \1
 
 ```sql
 SELECT

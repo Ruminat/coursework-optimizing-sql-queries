@@ -3,10 +3,10 @@
 -----------------------------------------------------------------------------------
 |   0 | SELECT STATEMENT      |           |     1 |    20 |    56   (8)| 00:00:01 |
 |   1 |  SORT AGGREGATE       |           |     1 |    20 |            |          |
-|*  2 |   HASH JOIN           |           |   250 |  5000 |    56   (8)| 00:00:01 |
-|   3 |    VIEW               |           |   250 |  3250 |    29  (14)| 00:00:01 |
-|   4 |     HASH UNIQUE       |           |   250 |  4000 |    29  (14)| 00:00:01 |
-|*  5 |      TABLE ACCESS FULL| ORDERS    |   253 |  4048 |    28  (11)| 00:00:01 |
+|*  2 |   HASH JOIN           |           |   379 |  7580 |    56   (8)| 00:00:01 |
+|   3 |    VIEW               |           |   379 |  4927 |    29  (14)| 00:00:01 |
+|   4 |     HASH UNIQUE       |           |   379 |  4927 |    29  (14)| 00:00:01 |
+|*  5 |      TABLE ACCESS FULL| ORDERS    |   385 |  5005 |    28  (11)| 00:00:01 |
 |   6 |    TABLE ACCESS FULL  | CUSTOMERS | 10319 | 72233 |    27   (0)| 00:00:01 |
 -----------------------------------------------------------------------------------
 
@@ -17,17 +17,21 @@ Predicate Information (identified by operation id):
    5 - filter(TRUNC(INTERNAL_FUNCTION("ORDER_DATE"),'fmdd')=TO_DATE('
               2007-06-29 00:00:00', 'syyyy-mm-dd hh24:mi:ss') AND "CUSTOMER_ID">0)
 
+Note
+-----
+   - this is an adaptive plan
+
 
 Statistics
 ----------------------------------------------------------
-       1184  recursive calls
+       2732  recursive calls
           0  db block gets
-       1653  consistent gets
-        297  physical reads
+       3905  consistent gets
+        478  physical reads
           0  redo size
         776  bytes sent via SQL*Net to client
          52  bytes received via SQL*Net from client
           2  SQL*Net roundtrips to/from client
-        114  sorts (memory)
+        248  sorts (memory)
           0  sorts (disk)
           1  rows processed

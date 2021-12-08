@@ -49,6 +49,8 @@ Peter
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
 
+Попробуем использовать вместо \texttt{MINUS} оператор \texttt{NOT EXISTS} с подзапросом (\firef{code-task-2-rewritten}).
+
 \SQLcode{task-2-rewritten.sql}
 \begin{algorithm}[H]
   \caption{Переписанный запрос}
@@ -62,18 +64,31 @@ Peter
   \label{fig-task-2-rewrite-plan}
 \end{figure}
 
+Смотрим, как изменился план. Стоимость (cost) уменьшилась довольно незначительно "--- на $\sim 2$\% (107~$\to$~105).
+Статистики же не изменились никоим образом.
+
 
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 \section{Вторая оптимизация (материализованное представление)}
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
 
-% \SQLcode{task-2-.sql}
-% \begin{algorithm}[H]
-%   \caption{Переписанный запрос}
-%   \label{code-task-2-rewritten}
-% \end{algorithm}
+Попробуем более масштабную оптимизацию "--- создадим материализованное представление.
+Оно может очень сильно ускорить запрос.
+Недостатком, тем не менее, является то, что данные в представлении нужно поддерживать (при изменении данных в исходной таблице), однако таблица \texttt{employees} маловероятно будет меняться часто (так как сотрудники в компании не приходят и уходят каждую минуту), может быть и такое, что таблица может не меняться днями. Поэтому использование материализованного представления здесь вполне оправдано.
 
+Создание материализованного представления показано на~\firef{jojo}.
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
+CREATE MATERIALIZED VIEW employees_names_mview
+  BUILD IMMEDIATE
+  REFRESH COMPLETE
+  AS /* ИСХОДНЫЙ ЗАПРОС */
+\end{minted}
+\begin{figure}[H]%
+  \caption{Создание материализованного представления \texttt{employees\_names\_mview}}
+  \label{jojo}
+\end{figure}
 
 \SQLplan{2-mview.txt}
 \begin{figure}[H]%
@@ -81,3 +96,12 @@ Peter
   \label{fig-task-2-mview-plan}
 \end{figure}
 
+Глядя на план, можно увидеть, как сильно изменился cost "--- на $\sim 97$\% (107~$\to$~3).
+Некоторые статистики, тем не менее, ухудшились (кроме \texttt{physical reads} "--- они улучшились):
+\begin{itemize}%
+  \item recursive calls "--- 526~$\to$~934,
+  \item consistent gets "--- 1189~$\to$~1460,
+  \item physical reads "--- 420~$\to$~96,
+  \item bytes sent via SQL*Net to client "--- 2023~$\to$~2239,
+  \item sorts (memory) "--- 68~$\to$~81.
+\end{itemize}

@@ -47,14 +47,16 @@ Date        Males (%) Females (%)
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
 
+Обратим внимание на то, что в исходном запросе используется сравнение даты, использующее функцию \texttt{TRUNC}.
+Создадим function-based индекс на эту функцию на столбец \texttt{order\_date}.
+
 \begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
-CREATE INDEX orders_order_date_fnidx ON orders (TRUNC(order_date, 'dd'));
+CREATE INDEX orders_order_date_fnidx ON oe.orders (TRUNC(order_date, 'dd'));
 \end{minted}
 \begin{figure}[H]%
   \caption{Создание function-based индекса}
   \label{fig-task-1-plan}
 \end{figure}
-
 
 \SQLplan{1-function-based.txt}
 \begin{figure}[H]%
@@ -62,11 +64,23 @@ CREATE INDEX orders_order_date_fnidx ON orders (TRUNC(order_date, 'dd'));
   \label{fig-task-1-function-based-plan}
 \end{figure}
 
+Как можно увидеть по плану, cost уменьшился на $\sim 14$\% (56~$\to$~48), поменялись также статистики (не в лучшую сторону):
+\begin{itemize}%
+  \item \texttt{recursive calls} "--- 2732~$\to$~2992,
+  \item \texttt{db block gets} "--- 0~$\to$~5,
+  \item \texttt{consistent gets} "--- 3905~$\to$~4135,
+  \item \texttt{physical reads} "--- 478~$\to$~491,
+  \item \texttt{redo size} "--- 0~$\to$~852,
+  \item \texttt{sorts (memory)} "--- 248~$\to$~271.
+\end{itemize}
+
 
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 \section{Вторая оптимизация (bitmap индекс)}
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
+
+Обратим также внимание на то, что столбец \texttt{gender} таблицы \texttt{customers} имеет всего 2 значения "--- «F» и «M», из чего напрашивается желание создать bitmap-индекс на этот столбец.
 
 \begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
 CREATE BITMAP INDEX customers_gender_btmidx ON oe.customers (gender);
@@ -81,3 +95,11 @@ CREATE BITMAP INDEX customers_gender_btmidx ON oe.customers (gender);
   \caption{План выполнения оптимизированного запроса}
   \label{fig-task-1-bitmap-plan}
 \end{figure}
+
+В плане видим, что стоимость (cost) уменьшилась на $\sim 8$\% (56~$\to$~51). Посмотрим, как поменялись статистики (в основном, в худшую сторону):
+\begin{itemize}%
+  \item \texttt{recursive calls} "--- 2732~$\to$~2988,
+  \item \texttt{consistent gets} "--- 3905~$\to$~4087,
+  \item \texttt{physical reads} "--- 478~$\to$~432,
+  \item \texttt{sorts (memory)} "--- 248~$\to$~274.
+\end{itemize}

@@ -68,9 +68,66 @@
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
 
-\SQLplan{3-group-num-index.txt}
+Заметим, что в таблице \texttt{student} столбец \texttt{group\_num} имеет тенденцию хранить похожие значения (так как для каждой группы $N$-ое количество студентов учится в ней).
+Отсюда делаем вывод, что логично было бы создать bitmap~индекс на этот столбец, что мы и сделаем.
+
+\SQLplan{3-bitmap.txt}
 \begin{figure}[H]%
   \caption{План выполнения оптимизированного запроса}
-  \label{fig-task-4-b-tree-plan}
+  \label{fig-task-3-bitmap-plan}
 \end{figure}
 
+Смотрим план выполнения. Наблюдаем уменьшение стоимости (cost) запроса "--- на $\sim 10$\% (373~$\to$~338).
+Посмотрим, как поменялись статистики (в лучшую сторону):
+\begin{itemize}%
+  \item \texttt{recursive calls} "--- 2471~$\to$~2446,
+  \item \texttt{db block gets} "--- 23~$\to$~22,
+  \item \texttt{consistent gets} "--- 4264~$\to$~3852,
+  \item \texttt{physical reads} "--- 610~$\to$~414,
+  \item \texttt{redo size} "--- 4052~$\to$~3832,
+  \item \texttt{sorts (memory)} "--- 246~$\to$~242.
+\end{itemize}
+
+
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+\section{Вторая оптимизация (индексно-организованная таблица)}
+% .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
+
+
+Обратим внимание на таблицу \texttt{student} "--- в ней нам нужны лишь поля \texttt{stud\_num}~и~\texttt{group\_num}. Так как остальные поля не используются, логично создать индексно-организованную таблицу \texttt{student\_lookup} (\firef{laplus-daakunesu}).
+\begin{samepage}%
+  \begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
+DROP TABLE student_lookup PURGE;
+CREATE TABLE student_lookup (
+  stud_num,
+  group_num,
+  CONSTRAINT student_lookup_pk PRIMARY KEY (stud_num)
+)
+ORGANIZATION INDEX
+AS
+  SELECT stud_num, group_num
+  FROM student.student;
+  \end{minted}
+  \begin{figure}[H]%
+    \caption{Создание индексно-организованной таблицы \texttt{student\_lookup}}
+    \label{laplus-daakunesu}
+  \end{figure}
+\end{samepage}
+
+После чего в исходном запросе (\firef{code-task-3}) нам необходимо изменить все вхождения \texttt{student.student} на \texttt{student.student\_lookup} (для краткости изложения, код приводиться не будет, так как нужно поменять всего лишь 2 строки).
+
+\SQLplan{3-iot.txt}
+\begin{figure}[H]%group-num-index
+  \caption{План выполнения оптимизированного запроса}
+  \label{fig-task-3-iot-plan}
+\end{figure}
+
+Посмотрим на план выполнения. Видим уменьшение стоимости (cost) запроса "--- на $\sim 13$\% (373~$\to$~324).
+Посмотрим, как поменялись статистики (в лучшую сторону, за исключением \texttt{consistent gets}):
+\begin{itemize}%
+  \item \texttt{recursive calls} "--- 2471~$\to$~2441,
+  \item \texttt{consistent gets} "--- 4264~$\to$~4389,
+  \item \texttt{physical reads} "--- 610~$\to$~404,
+  \item \texttt{redo size} "--- 4052~$\to$~3832,
+  \item \texttt{sorts (memory)} "--- 246~$\to$~242.
+\end{itemize}

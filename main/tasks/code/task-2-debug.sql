@@ -5,6 +5,10 @@ DROP INDEX employees_last_name_idx;
 CREATE INDEX employees_last_name_idx ON hr.employees (last_name);
 
 
+EXEC DBMS_STATS.GATHER_TABLE_STATS('HR', 'EMPLOYEES');
+EXEC DBMS_STATS.GATHER_TABLE_STATS('HR', 'DEPARTMENTS');
+
+
 -- original
 SELECT first_name
 FROM hr.employees

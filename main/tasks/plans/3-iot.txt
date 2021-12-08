@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------------------------------------------
+| Id  | Operation                         | Name              | Rows  | Bytes |TempSpc| Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                  |                   |  1898 |   170K|       |   324   (5)| 00:00:01 |
+|   1 |  HASH GROUP BY                    |                   |  1898 |   170K|       |   324   (5)| 00:00:01 |
+|*  2 |   HASH JOIN OUTER                 |                   | 47128 |  4234K|       |   321   (4)| 00:00:01 |
+|   3 |    VIEW                           |                   |  1898 |   137K|       |    24  (13)| 00:00:01 |
+|   4 |     HASH GROUP BY                 |                   |  1898 |   177K|       |    24  (13)| 00:00:01 |
+|*  5 |      HASH JOIN OUTER              |                   | 19983 |  1873K|       |    22   (5)| 00:00:01 |
+|   6 |       MERGE JOIN                  |                   |   671 | 44286 |       |     6  (17)| 00:00:01 |
+|   7 |        TABLE ACCESS BY INDEX ROWID| SPECIALITY        |     4 |   236 |       |     2   (0)| 00:00:01 |
+|   8 |         INDEX FULL SCAN           | SYS_C0010097      |     4 |       |       |     1   (0)| 00:00:01 |
+|*  9 |        SORT JOIN                  |                   |   671 |  4697 |       |     4  (25)| 00:00:01 |
+|  10 |         TABLE ACCESS FULL         | STUDY_GROUP       |   671 |  4697 |       |     3   (0)| 00:00:01 |
+|  11 |       INDEX FAST FULL SCAN        | STUDENT_LOOKUP_PK | 19983 |   585K|       |    16   (0)| 00:00:01 |
+|  12 |    VIEW                           |                   | 16661 |   292K|       |   296   (3)| 00:00:01 |
+|  13 |     HASH GROUP BY                 |                   | 16661 |   113K|       |   296   (3)| 00:00:01 |
+|  14 |      VIEW                         |                   | 16661 |   113K|       |   295   (3)| 00:00:01 |
+|  15 |       WINDOW SORT                 |                   | 16661 |  1041K|  1192K|   295   (3)| 00:00:01 |
+|* 16 |        HASH JOIN                  |                   | 16661 |  1041K|       |    35  (12)| 00:00:01 |
+|  17 |         INDEX FULL SCAN           | PK_UCHEB          |     5 |    35 |       |     1   (0)| 00:00:01 |
+|* 18 |         HASH JOIN                 |                   | 22411 |  1247K|       |    33  (10)| 00:00:01 |
+|  19 |          TABLE ACCESS FULL        | STUDY_GROUP       |   671 |  4697 |       |     3   (0)| 00:00:01 |
+|  20 |          NESTED LOOPS             |                   | 22411 |  1094K|       |    30  (10)| 00:00:01 |
+|  21 |           TABLE ACCESS FULL       | GRADES            | 22430 |   438K|       |    27   (0)| 00:00:01 |
+|* 22 |           INDEX UNIQUE SCAN       | STUDENT_LOOKUP_PK |     1 |    30 |       |     0   (0)| 00:00:01 |
+---------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("MIN_GRADES"."GROUP_NUM"(+)="GROUPS_WITH_STUDENTS"."GROUP_NUM")
+   5 - access("STUDY_GROUP"."GROUP_NUM"="STUDENT_LOOKUP"."GROUP_NUM"(+))
+   9 - access("STUDY_GROUP"."SPEC_NUM"="SPECIALITY"."SPEC_NUM")
+       filter("STUDY_GROUP"."SPEC_NUM"="SPECIALITY"."SPEC_NUM")
+  16 - access("GRADES"."COURSE_NUM"="CURRICULUM"."COURSE_NUM" AND
+              "STUDY_GROUP"."SPEC_NUM"="CURRICULUM"."SPEC_NUM")
+  18 - access("STUDY_GROUP"."GROUP_NUM"="STUDENT_LOOKUP"."GROUP_NUM")
+  22 - access("GRADES"."STUD_NUM"="STUDENT_LOOKUP"."STUD_NUM")
+
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+
+Statistics
+----------------------------------------------------------
+       2441  recursive calls
+         23  db block gets
+       4389  consistent gets
+        404  physical reads
+       3832  redo size
+      38650  bytes sent via SQL*Net to client
+        536  bytes received via SQL*Net from client
+         46  SQL*Net roundtrips to/from client
+        242  sorts (memory)
+          0  sorts (disk)
+        671  rows processed

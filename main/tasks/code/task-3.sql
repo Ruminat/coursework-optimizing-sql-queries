@@ -3,13 +3,13 @@ WITH
     SELECT
       student.study_group.group_num,
       student.speciality.spec_title,
-      COUNT(student.stud_num) AS students_count
+      COUNT(student.student.stud_num) AS students_count
     FROM
       student.study_group
         JOIN student.speciality
           ON student.study_group.spec_num = student.speciality.spec_num
         LEFT JOIN student.student
-          ON student.study_group.group_num = student.group_num
+          ON student.study_group.group_num = student.student.group_num
     GROUP BY
       student.study_group.group_num,
       student.speciality.spec_title
@@ -17,11 +17,11 @@ WITH
   student_courses AS (
     SELECT
       student.study_group.group_num,
-      student.stud_num,
+      student.student.stud_num,
       student.curriculum.course_num
     FROM student.student
       JOIN student.study_group
-        ON student.study_group.group_num = student.group_num
+        ON student.study_group.group_num = student.student.group_num
       JOIN student.curriculum
         ON student.study_group.spec_num = student.curriculum.spec_num
   ),

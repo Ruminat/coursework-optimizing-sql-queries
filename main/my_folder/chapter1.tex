@@ -9,16 +9,35 @@
 Схемы создавались в Portable Database~\cite{PDB} \texttt{xepdb1}, поэтому строки подключения имели вид: \texttt{CONNECT hr/PASSWORD@xepdb1}.
 
 Стандартные схемы Oracle (\texttt{HR}, \texttt{OE} и~т.\,д.) были взяты из оффициального репозитория Oracle~\cite{SampleSchemas}.
-
 Схема \texttt{STUDENT} была взята с учебного курса «Программирование и оптимизация баз данных»~\cite{StudentSchema}.
 
 Перед каждым выполнением SQL-запроса выполняется очистка Buffer Cache и Shared Pool с помощью первых двух команд ниже.
 После чего выполняется запрос с выводом плана.
-
 \begin{minted}[tabsize=2, mathescape, fontsize=\footnotesize]{sql}
 alter system flush shared_pool;
 alter system flush buffer_cache;
 set autotrace on
 @task-/*НОМЕР-ЗАДАНИЯ*/.sql
 set autotrace off
+\end{minted}
+
+Для схем \texttt{HR}, \texttt{OE} и \texttt{STUDENT} были сгенерированы данные (код генерации и SQL-скрипты для вставки доступны для скачивания в репозитории~\cite{Github}).
+После добавления данных выполняется сбор статистики для задействованных таблиц, пример для сбора статистики таблицы \texttt{HR.EMPLOYEES} показан ниже.
+\begin{minted}[tabsize=2, mathescape, fontsize=\footnotesize]{sql}
+EXEC DBMS_STATS.GATHER_TABLE_STATS('HR', 'EMPLOYEES');
+\end{minted}
+Результаты запросов показываются для исходных данных (без сгенерированных), так как некоторые запросы выводят сотни строк со сгенерированными данными.
+Все планы, включённые в данную работу, показываются для таблиц со сгенерированными данными.
+
+Проверка наличия индексов в таблицах делалась следующим образом:
+\begin{minted}[tabsize=2, mathescape, fontsize=\footnotesize]{sql}
+SELECT
+  CAST(ind.table_name AS VARCHAR2(36)) AS "Table",
+  CAST(ind.index_name AS VARCHAR2(36)) AS "Index name",
+  CAST(col.column_name AS VARCHAR2(36)) AS "Column",
+  CAST(ind.index_type AS VARCHAR2(36)) AS "Index type"
+FROM user_indexes ind
+  JOIN user_ind_columns col
+    ON ind.index_name = col.index_name
+ORDER BY 1, 2, 3, 4;
 \end{minted}

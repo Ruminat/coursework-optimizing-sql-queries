@@ -3,10 +3,10 @@
 -----------------------------------------------------------------------------------------------------------
 |   0 | SELECT STATEMENT                |                         |     1 |    20 |    51   (8)| 00:00:01 |
 |   1 |  SORT AGGREGATE                 |                         |     1 |    20 |            |          |
-|*  2 |   HASH JOIN                     |                         |   250 |  5000 |    51   (8)| 00:00:01 |
-|   3 |    VIEW                         |                         |   250 |  3250 |    29  (14)| 00:00:01 |
-|   4 |     HASH UNIQUE                 |                         |   250 |  4000 |    29  (14)| 00:00:01 |
-|*  5 |      TABLE ACCESS FULL          | ORDERS                  |   253 |  4048 |    28  (11)| 00:00:01 |
+|*  2 |   HASH JOIN                     |                         |   379 |  7580 |    51   (8)| 00:00:01 |
+|   3 |    VIEW                         |                         |   379 |  4927 |    29  (14)| 00:00:01 |
+|   4 |     HASH UNIQUE                 |                         |   379 |  4927 |    29  (14)| 00:00:01 |
+|*  5 |      TABLE ACCESS FULL          | ORDERS                  |   385 |  5005 |    28  (11)| 00:00:01 |
 |   6 |    VIEW                         | index$_join$_001        | 10319 | 72233 |    22   (0)| 00:00:01 |
 |*  7 |     HASH JOIN                   |                         |       |       |            |          |
 |   8 |      BITMAP CONVERSION TO ROWIDS|                         | 10319 | 72233 |     1   (0)| 00:00:01 |
@@ -25,14 +25,14 @@ Predicate Information (identified by operation id):
 
 Statistics
 ----------------------------------------------------------
-       1252  recursive calls
-         13  db block gets
-       1637  consistent gets
-        252  physical reads
-       2032  redo size
+       2988  recursive calls
+          0  db block gets
+       4087  consistent gets
+        432  physical reads
+          0  redo size
         776  bytes sent via SQL*Net to client
          52  bytes received via SQL*Net from client
           2  SQL*Net roundtrips to/from client
-        116  sorts (memory)
+        274  sorts (memory)
           0  sorts (disk)
           1  rows processed

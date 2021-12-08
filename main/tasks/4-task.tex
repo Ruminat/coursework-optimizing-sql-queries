@@ -47,11 +47,50 @@ Bakerman                                 Marvel                 56243,93
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
 
+В таблице \texttt{customers} довольно большое количество столбцов (больше 10), однако в нашем запросе используются лишь 3, отсюда появляется идея создать индексно-организованную таблицу \texttt{customer\_lookup}, содержащую эти столбцы. Это мы и сделаем (\firef{pekoooooora}).
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
+CREATE TABLE customer_lookup (
+  cust_id,
+  cust_last_name,
+  cust_first_name,
+  CONSTRAINT customers_iot_pk PRIMARY KEY (cust_id)
+)
+ORGANIZATION INDEX
+AS
+  SELECT
+    cust_id,
+    cust_last_name,
+    cust_first_name
+  FROM sh.customers;
+\end{minted}
+\begin{figure}[H]%
+  \caption{Создание индексно-организованной таблицы \texttt{customer\_lookup}}
+  \label{pekoooooora}
+\end{figure}
+
+Как и в предыдущей задаче, нам нужно всего лишь заменить все вхождения \texttt{sh.customer} на \texttt{sh.customer\_lookup}.
+
 \SQLplan{4-iot.txt}
 \begin{figure}[H]%
   \caption{План выполнения оптимизированного запроса}
   \label{fig-task-4-iot-plan}
 \end{figure}
+
+Как можно заметить на плане, стоимость запроса существенно снизилась "--- на $\sim 40$\% (1059~$\to$~635).
+Посмотрим на изменение статистик (многие статистики улучшились, причём некоторые "--- довольно ощутимо, "--- хотя некоторые, всё же ухудшились, особенно \texttt{consistent gets}):
+\begin{itemize}%
+  \item \texttt{recursive calls} "--- 2471~$\to$~2227,
+  \item \texttt{db block gets} "--- 23~$\to$~0,
+  \item \texttt{consistent gets} "--- 4264~$\to$~52689,
+  \item \texttt{physical reads} "--- 610~$\to$~2054,
+  \item \texttt{redo size} "--- 4052~$\to$~0,
+  \item \texttt{bytes sent via SQL*Net to client} "--- 38650~$\to$~735,
+  \item \texttt{bytes received via SQL*Net from client} "--- 536~$\to$~52,
+  \item \texttt{SQL*Net roundtrips to/from client} "--- 46~$\to$~2,
+  \item \texttt{sorts (memory)} "--- 246~$\to$~197,
+  \item \texttt{rows processed} "--- 671~$\to$~1.
+\end{itemize}
 
 
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
@@ -59,8 +98,27 @@ Bakerman                                 Marvel                 56243,93
 % .---|||___|||--- S U B S E C T I O N ---|||___|||---. %
 
 
+Есть также другой путь оптимизации 3-х столбцов из предыдущей оптимизации "--- заметим, что все эти столбцы находятся внутри \texttt{GROUP BY}, что как бы намекает нам на создание композитного B-tree индекса (B-tree потому, что значения не имеют тенденции иметь много одинаковых значений). Этим мы и займёмся "--- создадим такой индекс (\firef{baqua}).
+
+\begin{minted}[tabsize=2, mathescape, fontsize=\tiny]{sql}%
+CREATE INDEX customers_cmpidx ON sh.customers (cust_id, cust_first_name, cust_last_name);
+\end{minted}
+\begin{figure}[H]%
+  \caption{Создание композитного индекса}
+  \label{baqua}
+\end{figure}
+
 \SQLplan{4-composite.txt}
 \begin{figure}[H]%
   \caption{План выполнения оптимизированного запроса}
   \label{fig-task-4-composite-plan}
 \end{figure}
+
+Теперь посмотрим, как изменился cost. Улучшение поменьше, чем при первой оптимизации "--- на $\sim 34$\% (1059~$\to$~700), "--- однако плюсом этой оптимизации является то, что нам не нужно поддерживать отдельную таблицу \texttt{sh.customer\_lookup}, хотя и нужно поддерживать индекс, при этом прошлая оптимизация работает лишь для \texttt{sh.customer\_lookup}, текущая "--- для изначальной таблицы.
+Посмотрим на статистики (здесь, по сравнению с прошлой оптимизацией, не произошло ухудшения статистик, однако и улучшения не столь значительны):
+\begin{itemize}%
+  \item \texttt{recursive calls} "--- 4230~$\to$~4217,
+  \item \texttt{consistent gets} "--- 10016~$\to$~8701,
+  \item \texttt{physical reads} "--- 3582~$\to$~2286,
+  \item \texttt{sorts (memory)} "--- 374~$\to$~370.
+\end{itemize}

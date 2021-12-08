@@ -6,8 +6,11 @@ CREATE BITMAP INDEX customers_gender_btmidx ON oe.customers (gender);
 
 
 DROP INDEX orders_order_date_fnidx;
-CREATE INDEX orders_order_date_fnidx ON orders (TRUNC(order_date, 'dd'));
-/*+ INDEX (employees emp_department_ix)*/ 
+CREATE INDEX orders_order_date_fnidx ON oe.orders (TRUNC(order_date, 'dd'));
+/*+ INDEX (orders orders_order_date_fnidx)*/ 
+
+EXEC DBMS_STATS.GATHER_TABLE_STATS('OE', 'CUSTOMERS');
+EXEC DBMS_STATS.GATHER_TABLE_STATS('OE', 'ORDERS');
 
 SELECT
   '29-06-2007' AS "Date",
